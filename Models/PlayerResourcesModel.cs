@@ -1,20 +1,20 @@
 ﻿using GenericCityBuilderRPG.Enums;
 
-namespace GenericLooterShooterRPG.General
+namespace GenericCityBuilderRPG.Models
 {
-    public static class PlayerResources
+    public class PlayerResourcesModel
     {
-        public static int Wood { get; private set; }
-        public static int Copper { get; private set; }
-        public static int Rock { get; private set; }
-        public static int Sand { get; private set; }
-        public static int Gold { get; private set; }
-        public static int Silver { get; private set; }
-        public static int Coal { get; private set; }
-        public static int Diamond { get; private set; }
-        public static int Water { get; private set; }
+        public int Wood { get; private set; }
+        public int Copper { get; private set; }
+        public int Rock { get; private set; }
+        public int Sand { get; private set; }
+        public int Gold { get; private set; }
+        public int Silver { get; private set; }
+        public int Coal { get; private set; }
+        public int Diamond { get; private set; }
+        public int Water { get; private set; }
 
-        public static void AddResource(ResourceType type, int amount)
+        public void AddResource(ResourceType type, int amount)
         {
             switch (type)
             {

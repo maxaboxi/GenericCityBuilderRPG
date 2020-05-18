@@ -17,7 +17,7 @@ namespace GenericCityBuilderRPG.Models
         public float Damage { get; set; }
         public float DamageStartingValue { get; set; }
         public float Speed { get; set; }
-        public ResourceHarvester ResourceHarvester { get; set; }
+        public ResourceHarvesterModel ResourceHarvester { get; set; }
 
 
         public PlayerModel()
@@ -29,7 +29,7 @@ namespace GenericCityBuilderRPG.Models
             Height = 32;
             Area = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
             Scale = new Vector2(2, 2);
-            ResourceHarvester = new ResourceHarvester(1);
+            ResourceHarvester = new ResourceHarvesterModel(1);
         }
 
         private Vector2 SetStartingPosition()

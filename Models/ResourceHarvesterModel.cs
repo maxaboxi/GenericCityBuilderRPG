@@ -1,10 +1,10 @@
 ﻿namespace GenericLooterShooterRPG.Models
 {
-    public class ResourceHarvester
+    public class ResourceHarvesterModel
     {
         public int Speed;
 
-        public ResourceHarvester(int speed)
+        public ResourceHarvesterModel(int speed)
         {
             Speed = speed;
         }

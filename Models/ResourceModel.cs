@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace GenericCityBuilderRPG.Models
 {
-    class Resource
+    class ResourceModel
     {
         public int Frame { get; set; }
         public ResourceType Type { get; set; }
@@ -13,7 +13,7 @@ namespace GenericCityBuilderRPG.Models
         public Rectangle Area { get; set; }
         public Rectangle TileArea { get; set; }
 
-        public Resource(int frame, ResourceType type, int amount, Vector2 position, Rectangle tileArea)
+        public ResourceModel(int frame, ResourceType type, int amount, Vector2 position, Rectangle tileArea)
         {
             Frame = frame;
             Type = type;

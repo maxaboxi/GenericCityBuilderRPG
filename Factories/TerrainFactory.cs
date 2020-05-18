@@ -41,9 +41,9 @@ namespace GenericCityBuilderRPG.Factories
             return _tiles;
         }
 
-        public static IEnumerable<Resource> GenerateResources(IEnumerable<TerrainTileModel> tiles)
+        public static IEnumerable<ResourceModel> GenerateResources(IEnumerable<TerrainTileModel> tiles)
         {
-            List<Resource> resources = new List<Resource>();
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (var tile in tiles)
             {
                 double noise = GenerateNoise1(tile.Position.X, tile.Position.Y);
@@ -209,16 +209,16 @@ namespace GenericCityBuilderRPG.Factories
             return BiomeType.Grassland;
         }
 
-        private static Resource GetResources(TerrainTileModel tile, double noise)
+        private static ResourceModel GetResources(TerrainTileModel tile, double noise)
         {
             Random random = new Random();
 
             if (tile.Type == BiomeType.Water)
             {
-                return new Resource(random.Next(2, 9), ResourceType.Water, random.Next(1, 500), tile.Position, tile.Area);
+                return new ResourceModel(random.Next(2, 9), ResourceType.Water, random.Next(1, 500), tile.Position, tile.Area);
             }
 
-            Resource mineralResource;
+            ResourceModel mineralResource;
             mineralResource = AddMineral(tile, noise);
             if (mineralResource != null)
             {
@@ -231,60 +231,60 @@ namespace GenericCityBuilderRPG.Factories
                 case BiomeType.Rainforest:
                     if (random.Next(100) <= 30)
                     {
-                        return new Resource(random.Next(2, 9), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
+                        return new ResourceModel(random.Next(2, 9), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
                     }
-                    return new Resource(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
                 case BiomeType.Taiga:
                     if (random.Next(100) <= 30)
                     {
-                        return new Resource(random.Next(0, 1), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
+                        return new ResourceModel(random.Next(0, 1), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
                     }
-                    return new Resource(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
                 case BiomeType.Rock:
-                    return new Resource(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
                 case BiomeType.Sand:
-                    return new Resource(0, ResourceType.Sand, random.Next(1, 30), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Sand, random.Next(1, 30), tile.Position, tile.Area);
                 case BiomeType.Gravel:
                 case BiomeType.Bare:
                     if (random.Next(100) <= 5)
                     {
-                        return new Resource(random.Next(2,3), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
+                        return new ResourceModel(random.Next(2,3), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
                     }
-                    return new Resource(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
                 case BiomeType.Dirt:
                     if (random.Next(100) <= 20)
                     {
-                        return new Resource(random.Next(2,3), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
+                        return new ResourceModel(random.Next(2,3), ResourceType.Wood, random.Next(1, 50), tile.Position, tile.Area);
                     }
-                    return new Resource(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
+                    return new ResourceModel(0, ResourceType.Rock, random.Next(1, 60), tile.Position, tile.Area);
             }
 
             return null;
         }
 
-        private static Resource AddMineral(TerrainTileModel tile, double noise)
+        private static ResourceModel AddMineral(TerrainTileModel tile, double noise)
         {
             var random = new Random();
 
             if (noise < 0.05)
             {
-                return new Resource(2, ResourceType.Diamond, random.Next(1, 20), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
+                return new ResourceModel(2, ResourceType.Diamond, random.Next(1, 20), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
             }
             if (noise < 0.1)
             {
-                return new Resource(3, ResourceType.Gold, random.Next(1, 30), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
+                return new ResourceModel(3, ResourceType.Gold, random.Next(1, 30), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
             }
             if (noise < 0.15)
             {
-                return new Resource(6, ResourceType.Silver, random.Next(1, 40), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
+                return new ResourceModel(6, ResourceType.Silver, random.Next(1, 40), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
             }
             if (noise < 0.2)
             {
-                return new Resource(0, ResourceType.Coal, random.Next(1, 50), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
+                return new ResourceModel(0, ResourceType.Coal, random.Next(1, 50), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
             }
             if (noise < 0.25)
             {
-                return new Resource(1, ResourceType.Copper, random.Next(1, 40), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
+                return new ResourceModel(1, ResourceType.Copper, random.Next(1, 40), new Vector2(tile.Area.Center.X - (int)ResourceSize.MineralWidth / 2, tile.Area.Center.Y - (int)ResourceSize.MineralHeight / 2), tile.Area);
             }
             return null;
         }

@@ -63,7 +63,6 @@
     <Compile Include="Controllers\BackgroundController.cs" />
     <Compile Include="Controllers\PlayerAnimationController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
-    <Compile Include="Enums\BonusItemType.cs" />
     <Compile Include="Enums\MapSize.cs" />
     <Compile Include="Enums\MoistureType.cs" />
     <Compile Include="Enums\ResourceSize.cs" />
@@ -76,7 +75,7 @@
     <Compile Include="FSM\StateMachine.cs" />
     <Compile Include="General\Camera.cs" />
     <Compile Include="General\OpenSimplexNoise.cs" />
-    <Compile Include="General\PlayerResources.cs" />
+    <Compile Include="Models\PlayerResourcesModel.cs" />
     <Compile Include="GenericCityBuilderRPG.cs" />
     <Compile Include="General\SpriteSheet.cs" />
     <Compile Include="General\VirtualScreenSize.cs" />
@@ -84,8 +83,8 @@
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\IState.cs" />
     <Compile Include="Models\PlayerModel.cs" />
-    <Compile Include="Models\Resource.cs" />
-    <Compile Include="Models\ResourceHarvester.cs" />
+    <Compile Include="Models\ResourceModel.cs" />
+    <Compile Include="Models\ResourceHarvesterModel.cs" />
     <Compile Include="Models\TerrainTileListModel.cs" />
     <Compile Include="Models\TerrainTileModel.cs" />
     <Compile Include="Program.cs" />
@@ -93,6 +92,7 @@
     <Compile Include="States\GameState.cs" />
     <Compile Include="Views\BackgroundView.cs" />
     <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\PlayerResourcesView.cs" />
     <Compile Include="Views\PlayerView.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ using GenericCityBuilderRPG.Controllers;
 using GenericCityBuilderRPG.Models;
 using GenericCityBuilderRPG.Factories;
 using System.Linq;
+using GenericLooterShooterRPG.Views;
 
 namespace GenericCityBuilderRPG.States
 {
@@ -20,6 +21,7 @@ namespace GenericCityBuilderRPG.States
         private readonly List<IController> _controllers = new List<IController>();
         private PlayerModel _playerModel;
         private TerrainTileListModel _terrainTileListModel;
+        private PlayerResourcesModel _playerResourcesModel;
         private SpriteBatch _spriteBatch;
         private Camera _camera;
         private RenderTarget2D _screen;
@@ -72,19 +74,21 @@ namespace GenericCityBuilderRPG.States
 
             // Create models
             _playerModel = new PlayerModel();
+            _playerResourcesModel = new PlayerResourcesModel();
             var tiles = TerrainFactory.GenerateTiles().OrderBy(x => Guid.NewGuid()).ToList();
             var resources = TerrainFactory.GenerateResources(tiles);
             _terrainTileListModel = new TerrainTileListModel(tiles, resources);
 
             // Create and add controllers
             var playerController = new PlayerController(_playerModel, _terrainTileListModel);
-            var backgroundController = new BackgroundController(_playerModel, _terrainTileListModel);
+            var backgroundController = new BackgroundController(_playerModel, _terrainTileListModel, _playerResourcesModel);
 
             _controllers.Add(playerController);
             _controllers.Add(backgroundController);
 
             // Add views
             _views.Add(new BackgroundView(StateMachine.Game.Content, _spriteBatch, _terrainTileListModel, _playerModel));
+            _views.Add(new PlayerResourcesView(StateMachine.Game.Content, _spriteBatch, _playerResourcesModel));
             _views.Add(new PlayerView(StateMachine.Game.Content, _spriteBatch, _playerModel));
         }
 

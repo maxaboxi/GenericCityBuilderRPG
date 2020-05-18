@@ -1,7 +1,6 @@
 ﻿using GenericCityBuilderRPG.General;
 using GenericCityBuilderRPG.Interfaces;
 using GenericCityBuilderRPG.Models;
-using GenericLooterShooterRPG.General;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,13 +9,15 @@ namespace GenericCityBuilderRPG.Controllers
     class BackgroundController : IController
     {
         private readonly PlayerModel _playerModel;
+        private readonly PlayerResourcesModel _playerResourcesModel;
         private TerrainTileListModel _terrainTileListModel;
         private MouseState _previousMouseState;
         private MouseState _currentMouseState;
-        public BackgroundController(PlayerModel playerModel, TerrainTileListModel terrainListModel)
+        public BackgroundController(PlayerModel playerModel, TerrainTileListModel terrainListModel, PlayerResourcesModel playerResources)
         {
             _playerModel = playerModel;
             _terrainTileListModel = terrainListModel;
+            _playerResourcesModel = playerResources;
         }
 
         public void Update(GameTime gameTime)
@@ -32,7 +33,7 @@ namespace GenericCityBuilderRPG.Controllers
                     if (resource.Area.Contains(mousePosition))
                     {
                         resource.Amount -= _playerModel.ResourceHarvester.Speed;
-                        PlayerResources.AddResource(resource.Type, _playerModel.ResourceHarvester.Speed);
+                        _playerResourcesModel.AddResource(resource.Type, _playerModel.ResourceHarvester.Speed);
                         break;
                     }
                 }
