@@ -1,4 +1,6 @@
 ﻿using GenericCityBuilderRPG.Enums;
+using GenericLooterShooterRPG.Models;
+using System.Collections.Generic;
 
 namespace GenericCityBuilderRPG.Models
 {
@@ -46,6 +48,46 @@ namespace GenericCityBuilderRPG.Models
                     Water += amount;
                     break;
             }
+        }
+
+        public bool HasEnoughResources(List<ResourceCostModel> cost)
+        {
+            bool hasEnough = false;
+            foreach(var c in cost)
+            {
+                switch (c.Type)
+                {
+                    case ResourceType.Wood:
+                        hasEnough = Wood - c.Amount >= 0;
+                        break;
+                    case ResourceType.Copper:
+                        hasEnough = Copper - c.Amount >= 0;
+                        break;
+                    case ResourceType.Rock:
+                        hasEnough = Rock - c.Amount >= 0;
+                        break;
+                    case ResourceType.Sand:
+                        hasEnough = Sand - c.Amount >= 0;
+                        break;
+                    case ResourceType.Gold:
+                        hasEnough = Gold - c.Amount >= 0;
+                        break;
+                    case ResourceType.Silver:
+                        hasEnough = Silver - c.Amount >= 0;
+                        break;
+                    case ResourceType.Coal:
+                        hasEnough = Coal - c.Amount >= 0;
+                        break;
+                    case ResourceType.Diamond:
+                        hasEnough = Diamond - c.Amount >= 0;
+                        break;
+                    case ResourceType.Water:
+                        hasEnough = Water - c.Amount >= 0;
+                        break;
+                }
+            }
+
+            return hasEnough;
         }
     }
 }

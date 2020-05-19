@@ -13,10 +13,5 @@ namespace GenericCityBuilderRPG.Models
             Tiles.AddRange(tiles);
             Resources.AddRange(resources);
         }
-
-        internal object Where()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

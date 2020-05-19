@@ -25,7 +25,7 @@ namespace GenericCityBuilderRPG
             IsMouseVisible = true;
             var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            var fullScreen = false; // change to true
+            var fullScreen = true; // change to true
             if(width < 1920 || height < 1080)
             {
                 Exit();
@@ -50,13 +50,13 @@ namespace GenericCityBuilderRPG
 
             graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 1920, // change to width
-                PreferredBackBufferHeight = 1080, // change to height
+                PreferredBackBufferWidth = width, // change to width
+                PreferredBackBufferHeight = height, // change to height
                 SynchronizeWithVerticalRetrace = false,
                 IsFullScreen = fullScreen
             };
             Content.RootDirectory = "Content";
-            VirtualScreenSize.ScreenSizeMultiplier = 1920 / VirtualScreenSize.Width;
+            VirtualScreenSize.ScreenSizeMultiplier = width / VirtualScreenSize.Width; // change 1920 to width
         }
 
         /// <summary>

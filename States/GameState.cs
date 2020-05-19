@@ -12,6 +12,9 @@ using GenericCityBuilderRPG.Models;
 using GenericCityBuilderRPG.Factories;
 using System.Linq;
 using GenericLooterShooterRPG.Views;
+using GenericLooterShooterRPG.Models;
+using GenericLooterShooterRPG.Factories;
+using GenericLooterShooterRPG.Controllers;
 
 namespace GenericCityBuilderRPG.States
 {
@@ -22,6 +25,7 @@ namespace GenericCityBuilderRPG.States
         private PlayerModel _playerModel;
         private TerrainTileListModel _terrainTileListModel;
         private PlayerResourcesModel _playerResourcesModel;
+        private BuildingListModel _buildingListModel;
         private SpriteBatch _spriteBatch;
         private Camera _camera;
         private RenderTarget2D _screen;
@@ -75,21 +79,29 @@ namespace GenericCityBuilderRPG.States
             // Create models
             _playerModel = new PlayerModel();
             _playerResourcesModel = new PlayerResourcesModel();
+            
             var tiles = TerrainFactory.GenerateTiles().OrderBy(x => Guid.NewGuid()).ToList();
             var resources = TerrainFactory.GenerateResources(tiles);
             _terrainTileListModel = new TerrainTileListModel(tiles, resources);
 
+            var buildings = BuildingFactory.GenerateAvailableBuildings();
+            _buildingListModel = new BuildingListModel(buildings);
+
+
             // Create and add controllers
             var playerController = new PlayerController(_playerModel, _terrainTileListModel);
             var backgroundController = new BackgroundController(_playerModel, _terrainTileListModel, _playerResourcesModel);
+            var buildController = new BuildController(_buildingListModel, _playerModel, _playerResourcesModel);
 
             _controllers.Add(playerController);
             _controllers.Add(backgroundController);
+            _controllers.Add(buildController);
 
             // Add views
             _views.Add(new BackgroundView(StateMachine.Game.Content, _spriteBatch, _terrainTileListModel, _playerModel));
             _views.Add(new PlayerResourcesView(StateMachine.Game.Content, _spriteBatch, _playerResourcesModel, _playerModel));
             _views.Add(new PlayerView(StateMachine.Game.Content, _spriteBatch, _playerModel));
+            _views.Add(new BuildView(StateMachine.Game.Content, _spriteBatch, _buildingListModel, _playerModel));
         }
 
         public override void Exit()

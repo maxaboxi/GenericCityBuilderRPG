@@ -29,7 +29,7 @@ namespace GenericCityBuilderRPG.Models
             Height = 32;
             Area = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
             Scale = new Vector2(2, 2);
-            ResourceHarvester = new ResourceHarvesterModel(1);
+            ResourceHarvester = new ResourceHarvesterModel(1, 150f, 0f); // 750f
         }
 
         private Vector2 SetStartingPosition()

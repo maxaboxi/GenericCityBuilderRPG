@@ -67,6 +67,11 @@ namespace GenericCityBuilderRPG.Views
             {
                 if (resource.TileArea.Intersects(visibleArea) && resource.Amount > 0)
                 {
+                    if (resource.AmountVisible)
+                    {
+                        _spriteBatch.DrawString(_gameFont, resource.Type.ToString() + " " + resource.Amount.ToString(), new Vector2(resource.Position.X + 5, resource.Position.Y - 30), Color.White);
+                    }
+
                     if (resource.Type == ResourceType.Rock || resource.Type == ResourceType.Sand || resource.Type == ResourceType.Water)
                     {
                         continue;
@@ -80,9 +85,6 @@ namespace GenericCityBuilderRPG.Views
                     {
                         _minerals.Draw(resource.Position, resource.Frame, resource.Amount > 0 ? Color.White : Color.Red);
                     }
-
-                    _spriteBatch.DrawString(_gameFont, resource.Amount.ToString(), new Vector2(resource.Position.X, resource.Position.Y - 25), Color.White);
-
                 }
             }
         }

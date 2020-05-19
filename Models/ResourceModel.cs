@@ -12,6 +12,7 @@ namespace GenericCityBuilderRPG.Models
         public Vector2 Position { get; set; }
         public Rectangle Area { get; set; }
         public Rectangle TileArea { get; set; }
+        public bool AmountVisible { get; set; }
 
         public ResourceModel(int frame, ResourceType type, int amount, Vector2 position, Rectangle tileArea)
         {
@@ -21,6 +22,7 @@ namespace GenericCityBuilderRPG.Models
             Position = position;
             Area = CalculateResourceArea();
             TileArea = tileArea;
+            AmountVisible = false;
         }
 
         private Rectangle CalculateResourceArea()

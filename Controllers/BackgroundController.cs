@@ -11,8 +11,9 @@ namespace GenericCityBuilderRPG.Controllers
         private readonly PlayerModel _playerModel;
         private readonly PlayerResourcesModel _playerResourcesModel;
         private TerrainTileListModel _terrainTileListModel;
-        private MouseState _previousMouseState;
-        private MouseState _currentMouseState;
+        private float _harvesterCooldown = 0f;
+        private float _rightClickCooldownPeriod = 200f;
+        private float _rightClickCooldown = 0f;
         public BackgroundController(PlayerModel playerModel, TerrainTileListModel terrainListModel, PlayerResourcesModel playerResources)
         {
             _playerModel = playerModel;
@@ -22,18 +23,46 @@ namespace GenericCityBuilderRPG.Controllers
 
         public void Update(GameTime gameTime)
         {
-            _previousMouseState = _currentMouseState;
-            _currentMouseState = Mouse.GetState();
-            var mousePoint = _currentMouseState.Position;
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_harvesterCooldown > 0f)
+            {
+                _harvesterCooldown -= deltaTime;
+                return;
+            }
+
+            _harvesterCooldown = 0f;
+            var mouseState = Mouse.GetState();
+            var mousePoint = mouseState.Position;
             var mousePosition = VirtualScreenSize.ScreenToWorld(_playerModel.Position, mousePoint.X, mousePoint.Y);
-            if (_currentMouseState.LeftButton == ButtonState.Pressed && (_previousMouseState == null || _previousMouseState.LeftButton == ButtonState.Released))
+            var distance = Vector2.Distance(mousePosition, _playerModel.Position);
+            if (mouseState.LeftButton == ButtonState.Pressed && distance <= _playerModel.ResourceHarvester.Range)
             {
                 foreach (var resource in _terrainTileListModel.Resources)
                 {
-                    if (resource.Area.Contains(mousePosition))
+                    if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
                     {
+                        _harvesterCooldown = _playerModel.ResourceHarvester.Cooldown;
                         resource.Amount -= _playerModel.ResourceHarvester.Speed;
                         _playerResourcesModel.AddResource(resource.Type, _playerModel.ResourceHarvester.Speed);
+                        break;
+                    }
+                }
+            }
+
+            if (_rightClickCooldown > 0f)
+            {
+                _rightClickCooldown -= deltaTime;
+                return;
+            }
+
+            if (mouseState.RightButton == ButtonState.Pressed)
+            {
+                foreach (var resource in _terrainTileListModel.Resources)
+                {
+                    if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
+                    {
+                        _rightClickCooldown = _rightClickCooldownPeriod;
+                        resource.AmountVisible = !resource.AmountVisible;
                         break;
                     }
                 }
