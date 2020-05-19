@@ -23,13 +23,13 @@ namespace GenericCityBuilderRPG.Models
         public PlayerModel()
         {
             Position = SetStartingPosition();
-            Speed = 350f;
+            Speed = 350f; // 35f
             Frame = 0;
             Width = 24;
             Height = 32;
             Area = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
             Scale = new Vector2(2, 2);
-            ResourceHarvester = new ResourceHarvesterModel(1, 150f, 0f); // 750f
+            ResourceHarvester = new ResourceHarvesterModel(10, 150f, 75, 1); // 750f
         }
 
         private Vector2 SetStartingPosition()

@@ -1,6 +1,7 @@
 ﻿using GenericCityBuilderRPG.General;
 using GenericCityBuilderRPG.Models;
 using GenericCityBuilderRPG.Views;
+using GenericLooterShooterRPG.Enums;
 using GenericLooterShooterRPG.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -22,7 +23,7 @@ namespace GenericLooterShooterRPG.Views
 
         public BuildView(ContentManager contentManager, SpriteBatch spriteBatch, BuildingListModel buildingListModel, PlayerModel playerModel) : base(contentManager, spriteBatch)
         {
-            var buildingTextures = contentManager.Load<Texture2D>("buildings_128");
+            var buildingTextures = contentManager.Load<Texture2D>("buildings");
             var barTexture = contentManager.Load<Texture2D>("resbarbackground");
             _buildings = new SpriteSheet(spriteBatch, buildingTextures, 128, 128);
             _bar = new SpriteSheet(spriteBatch, barTexture, 256, 256);
@@ -60,7 +61,12 @@ namespace GenericLooterShooterRPG.Views
                 j += 68;
                 if (building.ShowTooltip)
                 {
-                    _spriteBatch.DrawString(_gameFontSmall, building.Type.ToString(), building.Position + new Vector2(0, -65), Color.White);
+                    var type = building.Type.ToString();
+                    if (building.Type == BuildingType.House || building.Type == BuildingType.PoorHouse)
+                    {
+                        type = "House";
+                    }
+                    _spriteBatch.DrawString(_gameFontSmall, type, building.Position + new Vector2(0, -65), Color.White);
                     var k = 0;
                     foreach(var c in building.Cost)
                     {

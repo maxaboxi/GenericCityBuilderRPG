@@ -30,12 +30,5 @@ namespace GenericCityBuilderRPG.General
 
             return new Vector2(position.X + x, position.Y + y);
         }
-
-        public static Vector2 WorldToScreen(Vector2 playerPosition, int x, int y)
-        {
-            var position = CalculateVisibleArea(playerPosition);
-
-            return new Vector2(position.X - x, position.Y - y);
-        }
     }
 }

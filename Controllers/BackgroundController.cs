@@ -42,8 +42,9 @@ namespace GenericCityBuilderRPG.Controllers
                     if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
                     {
                         _harvesterCooldown = _playerModel.ResourceHarvester.Cooldown;
-                        resource.Amount -= _playerModel.ResourceHarvester.Speed;
-                        _playerResourcesModel.AddResource(resource.Type, _playerModel.ResourceHarvester.Speed);
+                        var amount = resource.Amount < _playerModel.ResourceHarvester.Speed ? resource.Amount : _playerModel.ResourceHarvester.Speed;
+                        resource.Amount -= amount;
+                        _playerResourcesModel.AddResource(resource.Type, amount);
                         break;
                     }
                 }

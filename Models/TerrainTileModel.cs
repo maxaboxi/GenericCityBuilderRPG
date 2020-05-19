@@ -12,7 +12,6 @@ namespace GenericCityBuilderRPG.Models
         public int Width { get; set; }
         public int Height { get; set; }
         public Vector2 Position { get; set; }
-        public Vector2 TargetPosition { get; set; }
         public Rectangle Area { get; set; }
         public Vector2 Scale { get; set; }
         public BiomeType Type { get; set; }

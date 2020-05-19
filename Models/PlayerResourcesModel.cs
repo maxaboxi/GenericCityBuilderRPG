@@ -85,6 +85,11 @@ namespace GenericCityBuilderRPG.Models
                         hasEnough = Water - c.Amount >= 0;
                         break;
                 }
+
+                if (!hasEnough)
+                {
+                    return hasEnough;
+                }
             }
 
             return hasEnough;

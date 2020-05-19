@@ -1,6 +1,8 @@
-﻿using GenericCityBuilderRPG.General;
+﻿using GenericCityBuilderRPG.Enums;
+using GenericCityBuilderRPG.General;
 using GenericCityBuilderRPG.Interfaces;
 using GenericCityBuilderRPG.Models;
+using GenericLooterShooterRPG.Enums;
 using GenericLooterShooterRPG.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -27,12 +29,34 @@ namespace GenericLooterShooterRPG.Controllers
 
         public void Update(GameTime gameTime)
         {
+            AvailableBuildings(gameTime);
+
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             var keyState = Keyboard.GetState();
+
+            if (_keyCooldown > 0f)
+            {
+                _keyCooldown -= deltaTime;
+                return;
+            }
+
+            if (keyState.GetPressedKeys().Contains(Keys.Tab))
+            {
+                foreach (var building in _buildingListModel.AvailableBuildings)
+                {
+                    building.IsSelected = false;
+                    _keyCooldown = _keyCooldownPeriod;
+                }
+            }
+
+        }
+
+        private void AvailableBuildings(GameTime gameTime)
+        {
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             var mouseState = Mouse.GetState();
             var mousePoint = mouseState.Position;
             var mousePosition = VirtualScreenSize.ScreenToWorld(_playerModel.Position, mousePoint.X, mousePoint.Y);
-
             foreach (var building in _buildingListModel.AvailableBuildings)
             {
                 if (building.Area.Contains(mousePosition))
@@ -50,7 +74,8 @@ namespace GenericLooterShooterRPG.Controllers
                     return;
                 }
 
-                if (building.IsSelected && mouseState.LeftButton == ButtonState.Pressed)
+                var pos = new Vector2((int)mousePosition.X, (int)mousePosition.Y);
+                if (building.IsSelected && mouseState.LeftButton == ButtonState.Pressed && !IntersectsAnotherBuilding(new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)))
                 {
                     foreach (var c in building.Cost)
                     {
@@ -58,9 +83,11 @@ namespace GenericLooterShooterRPG.Controllers
                     }
                     _clickCooldown = _clickCooldownPeriod;
                     building.IsSelected = false;
-                    var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.Cost)
+                    
+                    var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.ResourceGenCooldown, building.Cost)
                     {
-                        Position = new Vector2((int)mousePosition.X, (int)mousePosition.Y)
+                        Position = pos,
+                        Area = new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)
                     };
                     _buildingListModel.BuiltBuildings.Add(b);
                 }
@@ -73,25 +100,20 @@ namespace GenericLooterShooterRPG.Controllers
                         building.IsSelected = !building.IsSelected;
                     }
                 }
-
-
             }
+        }
 
-            if (_keyCooldown > 0f)
+        private bool IntersectsAnotherBuilding(Rectangle area)
+        {
+            foreach(var building in _buildingListModel.BuiltBuildings)
             {
-                _keyCooldown -= deltaTime;
-                return;
-            }
-
-            if (keyState.GetPressedKeys().Contains(Keys.Tab))
-            {
-                foreach (var building in _buildingListModel.AvailableBuildings)
+                if (building.Area.Intersects(area))
                 {
-                    building.IsSelected = false;
-                    _keyCooldown = _keyCooldownPeriod;
+                    return true;
                 }
             }
 
+            return false;
         }
     }
 }

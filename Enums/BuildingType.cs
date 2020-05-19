@@ -4,10 +4,10 @@
     {
         House,
         Farm,
-        Tower,
-        Church,
+        TowerRound,
+        TowerSquare,
+        Cathedral,
         TownHall,
-        Tavern,
         Warehouse,
         Windmill,
         Pyramid,
@@ -15,7 +15,13 @@
         Stable,
         Lighthouse,
         Inn,
-        Jail,
-        University
+        PoorHouse,
+        University,
+        Statue,
+        Blacksmith,
+        Totem,
+        Castle,
+        Mine,
+        Barracks,
     }
 }
