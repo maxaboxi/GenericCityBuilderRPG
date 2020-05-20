@@ -18,7 +18,7 @@ namespace GenericCityBuilderRPG.Models
         public int Water { get; private set; }
         public int Food { get; private set; }
         public int Population { get; private set; }
-        public int PopulationLimit { get; private set; } = 50;
+        public int PopulationLimit { get; private set; } = 0;
         public List<ResourceCostModel> ResourceCosts { get; private set; } = new List<ResourceCostModel>();
 
         public void AddResource(ResourceType type, int amount)
@@ -56,9 +56,19 @@ namespace GenericCityBuilderRPG.Models
                     Food += amount;
                     break;
                 case ResourceType.Population:
-                    Population += amount;
+                    if (Population < PopulationLimit)
+                    {
+                        Population += amount;
+                        break;
+                    }
                     break;
+                    
             }
+        }
+
+        public void IncreasePopulationLimit(int amount)
+        {
+            PopulationLimit += amount;
         }
 
         public bool HasEnoughResources(List<ResourceCostModel> cost)

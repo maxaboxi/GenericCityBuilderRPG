@@ -17,7 +17,7 @@ namespace GenericLooterShooterRPG.Models
         public BuildingType Type { get; set; }
         public bool ShowTooltip { get; set; }
         public bool IsSelected { get; set; }
-        public bool RequirementsMet { get; set; }
+        public bool CanBuild { get; set; }
         public float ResourceCooldown { get; set; }
         public float ResourceGenCooldown { get; set; }
         public ResourceType ResourceType { get; set; }
@@ -39,6 +39,7 @@ namespace GenericLooterShooterRPG.Models
             Cost = cost;
             UpkeepCost = upkeepCost;
             IsSelected = false;
+            CanBuild = true;
         }
     }
 }

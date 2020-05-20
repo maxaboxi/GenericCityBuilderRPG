@@ -77,9 +77,22 @@ namespace GenericLooterShooterRPG.Controllers
                 }
 
                 var pos = new Vector2((int)mousePosition.X, (int)mousePosition.Y);
-                if (building.IsSelected && mouseState.LeftButton == ButtonState.Pressed && !IntersectsAnotherBuilding(new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)))
+                if (building.IsSelected)
                 {
-                    BuildABuilding(building, pos);
+                    if (IntersectsAnotherBuilding(new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)))
+                    {
+                        building.CanBuild = false;
+                    } else
+                    {
+                        building.CanBuild = true;
+                    }
+
+                    if (mouseState.LeftButton == ButtonState.Pressed && building.CanBuild)
+                    {
+                        building.CanBuild = true;
+                        BuildABuilding(building, pos);
+                    }
+                    
                 }
 
                 if (building.Area.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed)
@@ -95,6 +108,12 @@ namespace GenericLooterShooterRPG.Controllers
 
         private void BuildABuilding(BuildingModel building, Vector2 position)
         {
+            if (building.ResourceType == ResourceType.Population)
+            {
+                // TODO: Population increase implementation
+                _playerResourceModel.IncreasePopulationLimit(building.Type == BuildingType.House ? 5 : 10);
+            }
+
             foreach (var c in building.Cost)
             {
                 _playerResourceModel.AddResource(c.Type, -c.Amount);

@@ -101,7 +101,7 @@ namespace GenericCityBuilderRPG.States
             _views.Add(new BackgroundView(StateMachine.Game.Content, _spriteBatch, _terrainTileListModel, _playerModel));
             _views.Add(new PlayerResourcesView(StateMachine.Game.Content, _spriteBatch, _playerResourcesModel, _playerModel));
             _views.Add(new PlayerView(StateMachine.Game.Content, _spriteBatch, _playerModel));
-            _views.Add(new BuildView(StateMachine.Game.Content, _spriteBatch, _buildingListModel, _playerModel));
+            _views.Add(new BuildView(StateMachine.Game.Content, _spriteBatch, _buildingListModel, _playerModel, _playerResourcesModel));
         }
 
         public override void Exit()
