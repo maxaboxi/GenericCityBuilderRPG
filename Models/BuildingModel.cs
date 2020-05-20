@@ -18,18 +18,26 @@ namespace GenericLooterShooterRPG.Models
         public bool ShowTooltip { get; set; }
         public bool IsSelected { get; set; }
         public bool RequirementsMet { get; set; }
-        public int ResourceGenCooldown { get; set; }
+        public float ResourceCooldown { get; set; }
+        public float ResourceGenCooldown { get; set; }
+        public ResourceType ResourceType { get; set; }
+        public int ResourceAmount { get; set; }
+        public ResourceCostModel UpkeepCost { get; set; }
         public List<ResourceCostModel> Cost { get; set; }
 
 
-        public BuildingModel(int frame, int width, int height, BuildingType type, int resourceGenCooldown, List<ResourceCostModel> cost )
+        public BuildingModel(int frame, int width, int height, BuildingType type, float resourceGenCooldown, ResourceType resourceType, int resourceAmount, List<ResourceCostModel> cost, ResourceCostModel upkeepCost )
         {
             Frame = frame;
             Width = width;
             Height = height;
             Type = type;
+            ResourceCooldown = 0;
             ResourceGenCooldown = resourceGenCooldown;
+            ResourceType = resourceType;
+            ResourceAmount = resourceAmount;
             Cost = cost;
+            UpkeepCost = upkeepCost;
             IsSelected = false;
         }
     }

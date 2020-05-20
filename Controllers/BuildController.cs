@@ -6,6 +6,7 @@ using GenericLooterShooterRPG.Enums;
 using GenericLooterShooterRPG.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Linq;
 
 namespace GenericLooterShooterRPG.Controllers
@@ -30,6 +31,7 @@ namespace GenericLooterShooterRPG.Controllers
         public void Update(GameTime gameTime)
         {
             AvailableBuildings(gameTime);
+            BuiltBuildings(gameTime);
 
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             var keyState = Keyboard.GetState();
@@ -77,19 +79,7 @@ namespace GenericLooterShooterRPG.Controllers
                 var pos = new Vector2((int)mousePosition.X, (int)mousePosition.Y);
                 if (building.IsSelected && mouseState.LeftButton == ButtonState.Pressed && !IntersectsAnotherBuilding(new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)))
                 {
-                    foreach (var c in building.Cost)
-                    {
-                        _playerResourceModel.AddResource(c.Type, -c.Amount);
-                    }
-                    _clickCooldown = _clickCooldownPeriod;
-                    building.IsSelected = false;
-                    
-                    var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.ResourceGenCooldown, building.Cost)
-                    {
-                        Position = pos,
-                        Area = new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)
-                    };
-                    _buildingListModel.BuiltBuildings.Add(b);
+                    BuildABuilding(building, pos);
                 }
 
                 if (building.Area.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed)
@@ -99,6 +89,38 @@ namespace GenericLooterShooterRPG.Controllers
                     {
                         building.IsSelected = !building.IsSelected;
                     }
+                }
+            }
+        }
+
+        private void BuildABuilding(BuildingModel building, Vector2 position)
+        {
+            foreach (var c in building.Cost)
+            {
+                _playerResourceModel.AddResource(c.Type, -c.Amount);
+            }
+            _clickCooldown = _clickCooldownPeriod;
+            building.IsSelected = false;
+
+            var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.ResourceGenCooldown, building.ResourceType, building.ResourceAmount, building.Cost, building.UpkeepCost)
+            {
+                Position = position,
+                Area = new Rectangle((int)position.X, (int)position.Y, building.Width, building.Height)
+            };
+            _buildingListModel.BuiltBuildings.Add(b);
+            _playerResourceModel.AddResourceCost(b.UpkeepCost);
+        }
+
+        private void BuiltBuildings(GameTime gameTime)
+        {
+            foreach(var building in _buildingListModel.BuiltBuildings)
+            {
+                building.ResourceCooldown += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (building.ResourceCooldown > building.ResourceGenCooldown)
+                {
+                    _playerResourceModel.AddResource(building.ResourceType, building.ResourceAmount);
+                    _playerResourceModel.SubtractResources(building.UpkeepCost.Type);
+                    building.ResourceCooldown = 0;
                 }
             }
         }

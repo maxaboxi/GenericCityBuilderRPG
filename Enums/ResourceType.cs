@@ -2,6 +2,7 @@
 {
     public enum ResourceType
     {
+        None,
         Wood,
         Copper,
         Rock,
@@ -10,6 +11,8 @@
         Silver,
         Coal,
         Diamond,
-        Water
+        Water,
+        Food,
+        Population
     }
 }

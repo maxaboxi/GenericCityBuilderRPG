@@ -1,4 +1,5 @@
 ﻿using GenericCityBuilderRPG.Enums;
+using GenericLooterShooterRPG.Enums;
 using GenericLooterShooterRPG.Models;
 using System.Collections.Generic;
 
@@ -15,6 +16,10 @@ namespace GenericCityBuilderRPG.Models
         public int Coal { get; private set; }
         public int Diamond { get; private set; }
         public int Water { get; private set; }
+        public int Food { get; private set; }
+        public int Population { get; private set; }
+        public int PopulationLimit { get; private set; } = 50;
+        public List<ResourceCostModel> ResourceCosts { get; private set; } = new List<ResourceCostModel>();
 
         public void AddResource(ResourceType type, int amount)
         {
@@ -46,6 +51,12 @@ namespace GenericCityBuilderRPG.Models
                     break;
                 case ResourceType.Water:
                     Water += amount;
+                    break;
+                case ResourceType.Food:
+                    Food += amount;
+                    break;
+                case ResourceType.Population:
+                    Population += amount;
                     break;
             }
         }
@@ -84,6 +95,9 @@ namespace GenericCityBuilderRPG.Models
                     case ResourceType.Water:
                         hasEnough = Water - c.Amount >= 0;
                         break;
+                    case ResourceType.Food:
+                        hasEnough = Food - c.Amount >= 0;
+                        break;
                 }
 
                 if (!hasEnough)
@@ -93,6 +107,42 @@ namespace GenericCityBuilderRPG.Models
             }
 
             return hasEnough;
+        }
+
+        public void AddResourceCost(ResourceCostModel resourceCost)
+        {
+            var found = false;
+            foreach (var c in ResourceCosts)
+            {
+                if (c.Type == resourceCost.Type)
+                {
+                    c.Amount += 1;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                ResourceCosts.Add(resourceCost);
+            }
+            
+        }
+
+        public void SubtractResources(ResourceType type)
+        {
+            foreach (var c in ResourceCosts)
+            {
+                if (c.Type == type)
+                {
+                    AddResource(c.Type, -c.Amount);
+
+                    if (c.Type == ResourceType.Food && Food < 0)
+                    {
+                        AddResource(ResourceType.Population, -c.Amount / 2 < 1 ? 1 : c.Amount / 2);
+                    }
+                }
+            }
         }
     }
 }
