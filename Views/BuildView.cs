@@ -85,6 +85,7 @@ namespace GenericLooterShooterRPG.Views
 
         private void ShowTooltip(BuildingModel building)
         {
+            // TODO: Show upkeep cost w/ red
             var type = building.Type.ToString();
             if (building.Type == BuildingType.House || building.Type == BuildingType.PoorHouse)
             {

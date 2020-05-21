@@ -16,8 +16,6 @@ namespace GenericCityBuilderRPG.Views
         private readonly SpriteSheet _minerals;
         private readonly TerrainTileListModel _tileList;
         private readonly PlayerModel _playerModel;
-
-        // Uncomment for debugging
         private readonly SpriteBatch _spriteBatch;
         private readonly SpriteFont _gameFont;
         public BackgroundView(ContentManager contentManager, SpriteBatch spriteBatch, TerrainTileListModel tileList, PlayerModel playerModel) : base(contentManager, spriteBatch)
@@ -32,8 +30,6 @@ namespace GenericCityBuilderRPG.Views
             _minerals = new SpriteSheet(spriteBatch, mineralTextures, (int)ResourceSize.MineralWidth, (int)ResourceSize.MineralHeight);
             _tileList = tileList;
             _playerModel = playerModel;
-
-            // Uncomment for debugging
             _spriteBatch = spriteBatch;
             _gameFont = contentManager.Load<SpriteFont>("FontFile");
         }
@@ -43,50 +39,70 @@ namespace GenericCityBuilderRPG.Views
             var visibleArea = VirtualScreenSize.CalculateVisibleArea(_playerModel.Position);
             visibleArea.Width += 20;
             visibleArea.Height += 20;
-            foreach (var tile in _tileList.Tiles)
-            {
-                if (tile.Area.Intersects(visibleArea)) {
-                    if (tile.Type == BiomeType.Water)
-                    {
-                        _water.Draw(tile.Position, tile.Frame, Color.White, tile.Scale);
-                    } else
-                    {
-                        _terrain.Draw(tile.Position, tile.Frame, Color.White, tile.Scale);
-                    }
-                }
 
-                // Uncomment for debugging
-                //var rect = CalculateBoundingRectangle(_playerModel.Position);
-                //_spriteBatch.DrawString(_gameFont, tile.Area.ToString().Replace("{", "").Replace("}", ""), new Vector2(tile.Area.Left, tile.Area.Center.Y), tile.IsVisible ? Color.Black : Color.White);
-                //_spriteBatch.DrawString(_gameFont, "X: " + tile.Area.X.ToString() + " Y: " + tile.Area.Y.ToString(), new Vector2(tile.Area.Left, tile.Area.Center.Y), Color.Black);
-                //_spriteBatch.DrawString(_gameFont, "W: " + tile.Area.Width.ToString() + " H: " + tile.Area.Height.ToString(), new Vector2(tile.Area.Left, tile.Area.Center.Y + 25), tile.IsVisible ? Color.Black : Color.White);
-                //_spriteBatch.DrawString(_gameFont, rect.ToString().Replace("{", "").Replace("}", ""), new Vector2(rect.X + 10, rect.Y + 30), Color.Red);
-            }
-
-            foreach (var resource in _tileList.Resources)
+            // Draw map and resources
+            for (var x = 0; x < _tileList.Tiles.GetLength(0); x++)
             {
-                if (resource.TileArea.Intersects(visibleArea) && resource.Amount > 0)
+                for (var y = 0; y < _tileList.Tiles.GetLength(1); y++)
                 {
-                    if (resource.AmountVisible)
+                    var tile = _tileList.Tiles[x, y];
+                    if (tile.Area.Intersects(visibleArea))
                     {
-                        _spriteBatch.DrawString(_gameFont, resource.Type.ToString() + " " + resource.Amount.ToString(), new Vector2(resource.Position.X + 5, resource.Position.Y - 30), Color.White);
-                    }
+                        if (tile.Type == BiomeType.Water)
+                        {
+                            _water.Draw(tile.Position, tile.Frame, Color.White, tile.Scale);
+                        }
+                        else
+                        {
+                            _terrain.Draw(tile.Position, tile.Frame, Color.White, tile.Scale);
+                        }
 
-                    if (resource.Type == ResourceType.Rock || resource.Type == ResourceType.Sand || resource.Type == ResourceType.Water)
-                    {
-                        continue;
-                    }
+                        var resource = _tileList.Resources[x, y];
+                        if (resource.Amount <= 0)
+                        {
+                            continue;
+                        }
 
-                    if (resource.Type == ResourceType.Wood)
-                    {
-                        _tree.Draw(resource.Position, resource.Frame, Color.White);
-                    }
-                    else
-                    {
-                        _minerals.Draw(resource.Position, resource.Frame, resource.Amount > 0 ? Color.White : Color.Red);
+                        if (resource.Type == ResourceType.Rock || resource.Type == ResourceType.Sand || resource.Type == ResourceType.Water)
+                        {
+                            if (resource.AmountVisible)
+                            {
+                                DrawResourceAmount(resource);
+                            }
+                            continue;
+                            
+                        }
+
+                        if (resource.Type == ResourceType.Wood)
+                        {
+                            _tree.Draw(resource.Position, resource.Frame, Color.White);
+                        }
+                        else
+                        {
+                            _minerals.Draw(resource.Position, resource.Frame, resource.Amount > 0 ? Color.White : Color.Red);
+                        }
+
+                        if (resource.AmountVisible)
+                        {
+                            DrawResourceAmount(resource);
+                        }
+
                     }
                 }
             }
+        }
+
+        private void DrawResourceAmount(ResourceModel resource)
+        {
+            if (resource.Type == ResourceType.Rock || resource.Type == ResourceType.Sand || resource.Type == ResourceType.Water)
+            {
+                _spriteBatch.DrawString(_gameFont, resource.Type.ToString() + ": " + resource.Amount.ToString(), new Vector2(resource.Position.X + (int)TerrainTileModelSize.Width / 2 - 85, resource.Position.Y + (int)TerrainTileModelSize.Height / 2 - 30), Color.White);
+            } 
+            else
+            {
+                _spriteBatch.DrawString(_gameFont, resource.Type.ToString() + " " + resource.Amount.ToString(), new Vector2(resource.Position.X - 15, resource.Position.Y - 30), Color.White);
+            }
+            
         }
     }
 }

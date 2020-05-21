@@ -75,16 +75,17 @@ namespace GenericCityBuilderRPG.States
             {
                 resetForNewGame = (bool)args[0];
             }
+            // Generate map
+            TerrainFactory.GenerateGrid();
+            TerrainFactory.GenerateResourceGrid();
+
+            // Generate available buildings
+            var buildings = BuildingFactory.GenerateAvailableBuildings();
 
             // Create models
             _playerModel = new PlayerModel();
             _playerResourcesModel = new PlayerResourcesModel();
-            
-            var tiles = TerrainFactory.GenerateTiles().OrderBy(x => Guid.NewGuid()).ToList();
-            var resources = TerrainFactory.GenerateResources(tiles);
-            _terrainTileListModel = new TerrainTileListModel(tiles, resources);
-
-            var buildings = BuildingFactory.GenerateAvailableBuildings();
+            _terrainTileListModel = new TerrainTileListModel(TerrainFactory.Tiles, TerrainFactory.Resources);
             _buildingListModel = new BuildingListModel(buildings);
 
 
@@ -97,7 +98,7 @@ namespace GenericCityBuilderRPG.States
             _controllers.Add(backgroundController);
             _controllers.Add(buildController);
 
-            // Add views
+            // Create and add views
             _views.Add(new BackgroundView(StateMachine.Game.Content, _spriteBatch, _terrainTileListModel, _playerModel));
             _views.Add(new PlayerResourcesView(StateMachine.Game.Content, _spriteBatch, _playerResourcesModel, _playerModel));
             _views.Add(new PlayerView(StateMachine.Game.Content, _spriteBatch, _playerModel));

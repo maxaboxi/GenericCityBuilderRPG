@@ -39,7 +39,6 @@ namespace GenericCityBuilderRPG.Controllers
         public void Update(GameTime gameTime)
         {
             Rectangle visibleArea = VirtualScreenSize.CalculateVisibleArea(_playerModel.Position);
-            //var visibleWaterTiles = _tiles.Tiles.Where(t => t.Area.Intersects(visibleArea) && t.Type == BiomeType.Water).ToList();
             var deltaTime = gameTime.ElapsedGameTime.Milliseconds / 1000f;
             var state = Keyboard.GetState();
             var pressedKeys = state.GetPressedKeys();
@@ -71,30 +70,30 @@ namespace GenericCityBuilderRPG.Controllers
                 if (pressedKeys.Contains(Keys.W))
                 {
                     _animation = new PlayerAnimationController(new int[] { 8, 9, 10, 11, 12, 13, 14, 15 },
-                                                   _playerModel.Position,
-                                                   new Vector2(0, -_playerModel.Speed),
-                                                   MoveCooldownPeriod);
+                                                                _playerModel.Position,
+                                                                new Vector2(0, -_playerModel.Speed),
+                                                                MoveCooldownPeriod);
                 }
                 else if (pressedKeys.Contains(Keys.A))
                 {
                     _animation = new PlayerAnimationController(new int[] { 16, 17, 18, 19, 20, 21, 22, 23 },
-                                                   _playerModel.Position,
-                                                   new Vector2(-_playerModel.Speed, 0),
-                                                   MoveCooldownPeriod);
+                                                               _playerModel.Position,
+                                                               new Vector2(-_playerModel.Speed, 0),
+                                                               MoveCooldownPeriod);
                 }
                 else if (pressedKeys.Contains(Keys.S))
                 {
                     _animation = new PlayerAnimationController(new int[] { 0, 1, 2, 3, 4, 5, 6, 7 },
-                                                   _playerModel.Position,
-                                                   new Vector2(0, _playerModel.Speed),
-                                                   MoveCooldownPeriod);
+                                                               _playerModel.Position,
+                                                               new Vector2(0, _playerModel.Speed),
+                                                               MoveCooldownPeriod);
                 }
                 else if (pressedKeys.Contains(Keys.D))
                 {
                     _animation = new PlayerAnimationController(new int[] { 24, 25, 26, 27, 28, 29, 30, 31 },
-                                                   _playerModel.Position,
-                                                   new Vector2(_playerModel.Speed, 0),
-                                                   MoveCooldownPeriod);
+                                                               _playerModel.Position,
+                                                               new Vector2(_playerModel.Speed, 0),
+                                                               MoveCooldownPeriod);
                 }
             }
 

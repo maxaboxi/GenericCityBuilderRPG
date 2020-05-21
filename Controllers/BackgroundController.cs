@@ -37,17 +37,22 @@ namespace GenericCityBuilderRPG.Controllers
             var distance = Vector2.Distance(mousePosition, _playerModel.Position);
             if (mouseState.LeftButton == ButtonState.Pressed && distance <= _playerModel.ResourceHarvester.Range)
             {
-                foreach (var resource in _terrainTileListModel.Resources)
+                for (var x = 0; x < _terrainTileListModel.Resources.GetLength(0); x++)
                 {
-                    if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
+                    for (var y = 0; y < _terrainTileListModel.Resources.GetLength(1); y++)
                     {
-                        _harvesterCooldown = _playerModel.ResourceHarvester.Cooldown;
-                        var amount = resource.Amount < _playerModel.ResourceHarvester.Speed ? resource.Amount : _playerModel.ResourceHarvester.Speed;
-                        resource.Amount -= amount;
-                        _playerResourcesModel.AddResource(resource.Type, amount);
-                        break;
+                        var resource = _terrainTileListModel.Resources[x, y];
+                        if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
+                        {
+                            _harvesterCooldown = _playerModel.ResourceHarvester.Cooldown;
+                            var amount = resource.Amount < _playerModel.ResourceHarvester.Speed ? resource.Amount : _playerModel.ResourceHarvester.Speed;
+                            resource.Amount -= amount;
+                            _playerResourcesModel.AddResource(resource.Type, amount);
+                            break;
+                        }
                     }
                 }
+
             }
 
             if (_rightClickCooldown > 0f)
@@ -58,13 +63,17 @@ namespace GenericCityBuilderRPG.Controllers
 
             if (mouseState.RightButton == ButtonState.Pressed)
             {
-                foreach (var resource in _terrainTileListModel.Resources)
+                for (var x = 0; x < _terrainTileListModel.Resources.GetLength(0); x++)
                 {
-                    if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
+                    for (var y = 0; y < _terrainTileListModel.Resources.GetLength(1); y++)
                     {
-                        _rightClickCooldown = _rightClickCooldownPeriod;
-                        resource.AmountVisible = !resource.AmountVisible;
-                        break;
+                        var resource = _terrainTileListModel.Resources[x, y];
+                        if (resource.Area.Contains(mousePosition) && resource.Amount > 0)
+                        {
+                            _rightClickCooldown = _rightClickCooldownPeriod;
+                            resource.AmountVisible = !resource.AmountVisible;
+                            break;
+                        }
                     }
                 }
             }

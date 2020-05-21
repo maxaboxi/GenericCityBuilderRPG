@@ -53,24 +53,24 @@ namespace GenericLooterShooterRPG.Views
             }
 
             // Water
-            _water.Draw(position + new Vector2(15,0), 0, Color.White, new Vector2(0.25f, 0.25f));
+            _water.Draw(position + new Vector2(15,0), 0, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Water.ToString(), position + new Vector2(55, 0), _playerResourcesModel.Water >= 0 ? Color.White : Color.Red);
 
             // Food
             // TODO: Change sprite
-            _water.Draw(position + new Vector2(160, 0), 0, Color.White, new Vector2(0.25f, 0.25f));
+            _water.Draw(position + new Vector2(160, 0), 0, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Food.ToString(), position + new Vector2(200, 0), _playerResourcesModel.Food >= 0 ? Color.White : Color.Red);
 
             // Sand
-            _terrain.Draw(position + new Vector2(320, 0), 0, Color.White, new Vector2(0.25f, 0.25f));
+            _terrain.Draw(position + new Vector2(320, 0), 0, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Sand.ToString(), position + new Vector2(360, 0), _playerResourcesModel.Sand >= 0 ? Color.White : Color.Red);
 
             // Rock
-            _terrain.Draw(position + new Vector2(480, 0), 2, Color.White, new Vector2(0.25f, 0.25f));
+            _terrain.Draw(position + new Vector2(480, 0), 2, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Rock.ToString(), position + new Vector2(520, 0), _playerResourcesModel.Rock >= 0 ? Color.White : Color.Red);
 
             // Wood
-            _tree.Draw(position + new Vector2(640, 0), 7, Color.White, new Vector2(0.25f, 0.25f));
+            _tree.Draw(position + new Vector2(640, 0), 7, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Wood.ToString(), position + new Vector2(680, 0), _playerResourcesModel.Wood >= 0 ? Color.White : Color.Red);
 
             // Coal
@@ -95,7 +95,7 @@ namespace GenericLooterShooterRPG.Views
 
             // Population
             // TODO: Change sprite
-            _water.Draw(position + new Vector2(1600, 0), 0, Color.White, new Vector2(0.25f, 0.25f));
+            _water.Draw(position + new Vector2(1600, 0), 0, Color.White, new Vector2(0.125f, 0.125f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Population.ToString() + "/" + _playerResourcesModel.PopulationLimit.ToString(), position + new Vector2(1640, 0), Color.White);
         }
     }

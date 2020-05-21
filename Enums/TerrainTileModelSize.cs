@@ -2,7 +2,7 @@
 {
     enum TerrainTileModelSize
     {
-        Width = 128,
-        Height = 128
+        Width = 256,
+        Height = 256
     }
 }
