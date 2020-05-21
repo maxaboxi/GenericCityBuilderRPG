@@ -58,7 +58,6 @@ namespace GenericCityBuilderRPG.Controllers
 
             if (_animation != null && _animation.Done)
             {
-
                 _playerModel.Position = _animation.Position;
                 _playerModel.Frame = _animation.CurrentFrame;
                 MoveFinished?.Invoke(this, EventArgs.Empty);

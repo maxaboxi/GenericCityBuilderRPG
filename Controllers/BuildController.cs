@@ -20,6 +20,8 @@ namespace GenericLooterShooterRPG.Controllers
         private float _clickCooldown = 0f;
         private float _keyCooldownPeriod = 200f;
         private float _keyCooldown = 0f;
+        private float _resourceCooldown = 0f;
+        private float _resourceGenCooldown = 30000f;
 
         public BuildController(BuildingListModel buildingListModel, PlayerModel playerModel, PlayerResourcesModel playerResourcesModel)
         {
@@ -79,7 +81,7 @@ namespace GenericLooterShooterRPG.Controllers
                 var pos = new Vector2((int)mousePosition.X, (int)mousePosition.Y);
                 if (building.IsSelected)
                 {
-                    if (IntersectsAnotherBuilding(new Rectangle((int)pos.X, (int)pos.Y, building.Width, building.Height)))
+                    if (IntersectsAnotherBuilding(new Rectangle((int)pos.X - 10, (int)pos.Y - 10, building.Width - 30, building.Height - 30)))
                     {
                         building.CanBuild = false;
                     } else
@@ -121,26 +123,36 @@ namespace GenericLooterShooterRPG.Controllers
             _clickCooldown = _clickCooldownPeriod;
             building.IsSelected = false;
 
-            var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.ResourceGenCooldown, building.ResourceType, building.ResourceAmount, building.Cost, building.UpkeepCost)
+            var b = new BuildingModel(building.Frame, building.Width, building.Height, building.Type, building.ResourceType, building.ResourceAmount, building.Cost, building.UpkeepCost)
             {
                 Position = position,
-                Area = new Rectangle((int)position.X, (int)position.Y, building.Width, building.Height)
+                Area = new Rectangle((int)position.X, (int)position.Y, building.Width - 30, building.Height - 30)
             };
             _buildingListModel.BuiltBuildings.Add(b);
-            _playerResourceModel.AddResourceCost(b.UpkeepCost);
+            _playerResourceModel.AddUpkeepCost(b.UpkeepCost);
         }
 
         private void BuiltBuildings(GameTime gameTime)
         {
-            foreach(var building in _buildingListModel.BuiltBuildings)
+            _resourceCooldown += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_resourceCooldown > _resourceGenCooldown && _buildingListModel.BuiltBuildings.Count > 0)
             {
-                building.ResourceCooldown += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (building.ResourceCooldown > building.ResourceGenCooldown)
+                foreach (var building in _buildingListModel.BuiltBuildings)
                 {
-                    _playerResourceModel.AddResource(building.ResourceType, building.ResourceAmount);
-                    _playerResourceModel.SubtractResources(building.UpkeepCost.Type);
-                    building.ResourceCooldown = 0;
+                    if (building.ResourceType != ResourceType.Population)
+                    {
+                        _playerResourceModel.AddResource(building.ResourceType, building.ResourceAmount);
+                    }
+                    else
+                    {
+                        if (_playerResourceModel.Food > 0 && _playerResourceModel.Population < _playerResourceModel.PopulationLimit)
+                        {
+                            _playerResourceModel.AddResource(ResourceType.Population, 1);
+                        }
+                    }
                 }
+                _playerResourceModel.SubtractResources();
+                _resourceCooldown = 0f;
             }
         }
 

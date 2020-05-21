@@ -2,6 +2,7 @@
 using GenericCityBuilderRPG.Interfaces;
 using GenericLooterShooterRPG.Models;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace GenericCityBuilderRPG.Models
 {
@@ -34,9 +35,10 @@ namespace GenericCityBuilderRPG.Models
 
         private Vector2 SetStartingPosition()
         {
-            var x = (int)MapSize.Width / 2;
-            var y = (int)MapSize.Height / 2;
-            return new Vector2(x, y);
+            var random = new Random();
+            var x = (int)MapSize.Width * (int)TerrainTileModelSize.Width;
+            var y = (int)MapSize.Height * (int)TerrainTileModelSize.Height;
+            return new Vector2(random.Next(0, x), random.Next(0, y));
         }
     }
 }

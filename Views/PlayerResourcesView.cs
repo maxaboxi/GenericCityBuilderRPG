@@ -15,7 +15,9 @@ namespace GenericLooterShooterRPG.Views
         private readonly PlayerModel _playerModel;
         private readonly SpriteSheet _terrain;
         private readonly SpriteSheet _water;
+        private readonly SpriteSheet _food;
         private readonly SpriteSheet _tree;
+        private readonly SpriteSheet _population;
         private readonly SpriteSheet _bar;
         private readonly SpriteSheet _minerals;
         private readonly SpriteBatch _spriteBatch;
@@ -28,11 +30,15 @@ namespace GenericLooterShooterRPG.Views
             var terrainTextures = contentManager.Load<Texture2D>("terrain");
             var treeTextures = contentManager.Load<Texture2D>("trees");
             var waterTexture = contentManager.Load<Texture2D>("water");
+            var foodTexture = contentManager.Load<Texture2D>("food");
             var mineralTextures = contentManager.Load<Texture2D>("minerals");
             var barTexture = contentManager.Load<Texture2D>("resbarbackground");
+            var popTexture = contentManager.Load<Texture2D>("npc");
             _terrain = new SpriteSheet(spriteBatch, terrainTextures, (int)TerrainTileModelSize.Width, (int)TerrainTileModelSize.Height);
+            _food = new SpriteSheet(spriteBatch, foodTexture, (int)ResourceSize.MineralWidth, (int)ResourceSize.MineralHeight);
             _water = new SpriteSheet(spriteBatch, waterTexture, (int)TerrainTileModelSize.Width, (int)TerrainTileModelSize.Height);
             _tree = new SpriteSheet(spriteBatch, treeTextures, (int)ResourceSize.TreeWidth, (int)ResourceSize.TreeHeight);
+            _population = new SpriteSheet(spriteBatch, popTexture, 48, 51);
             _minerals = new SpriteSheet(spriteBatch, mineralTextures, (int)ResourceSize.MineralWidth, (int)ResourceSize.MineralHeight);
             _bar = new SpriteSheet(spriteBatch, barTexture, 256, 256);
 
@@ -57,8 +63,7 @@ namespace GenericLooterShooterRPG.Views
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Water.ToString(), position + new Vector2(55, 0), _playerResourcesModel.Water >= 0 ? Color.White : Color.Red);
 
             // Food
-            // TODO: Change sprite
-            _water.Draw(position + new Vector2(160, 0), 0, Color.White, new Vector2(0.125f, 0.125f));
+            _food.Draw(position + new Vector2(160, 0), 0, Color.White, new Vector2(0.5f, 0.5f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Food.ToString(), position + new Vector2(200, 0), _playerResourcesModel.Food >= 0 ? Color.White : Color.Red);
 
             // Sand
@@ -70,7 +75,7 @@ namespace GenericLooterShooterRPG.Views
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Rock.ToString(), position + new Vector2(520, 0), _playerResourcesModel.Rock >= 0 ? Color.White : Color.Red);
 
             // Wood
-            _tree.Draw(position + new Vector2(640, 0), 7, Color.White, new Vector2(0.125f, 0.125f));
+            _tree.Draw(position + new Vector2(640, 0), 7, Color.White, new Vector2(0.25f, 0.25f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Wood.ToString(), position + new Vector2(680, 0), _playerResourcesModel.Wood >= 0 ? Color.White : Color.Red);
 
             // Coal
@@ -94,8 +99,7 @@ namespace GenericLooterShooterRPG.Views
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Diamond.ToString(), position + new Vector2(1480, 0), _playerResourcesModel.Diamond >= 0 ? Color.White : Color.Red);
 
             // Population
-            // TODO: Change sprite
-            _water.Draw(position + new Vector2(1600, 0), 0, Color.White, new Vector2(0.125f, 0.125f));
+            _population.Draw(position + new Vector2(1600, 0), 5, Color.White, new Vector2(0.5f, 0.7f));
             _spriteBatch.DrawString(_gameFont, _playerResourcesModel.Population.ToString() + "/" + _playerResourcesModel.PopulationLimit.ToString(), position + new Vector2(1640, 0), Color.White);
         }
     }

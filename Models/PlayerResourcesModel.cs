@@ -19,7 +19,7 @@ namespace GenericCityBuilderRPG.Models
         public int Food { get; private set; }
         public int Population { get; private set; }
         public int PopulationLimit { get; private set; } = 0;
-        public List<ResourceCostModel> ResourceCosts { get; private set; } = new List<ResourceCostModel>();
+        public List<ResourceCostModel> UpkeepCosts { get; private set; } = new List<ResourceCostModel>();
 
         public void AddResource(ResourceType type, int amount)
         {
@@ -62,7 +62,6 @@ namespace GenericCityBuilderRPG.Models
                         break;
                     }
                     break;
-                    
             }
         }
 
@@ -119,14 +118,14 @@ namespace GenericCityBuilderRPG.Models
             return hasEnough;
         }
 
-        public void AddResourceCost(ResourceCostModel resourceCost)
+        public void AddUpkeepCost(ResourceCostModel upkeepCost)
         {
             var found = false;
-            foreach (var c in ResourceCosts)
+            foreach (var c in UpkeepCosts)
             {
-                if (c.Type == resourceCost.Type)
+                if (c.Type == upkeepCost.Type)
                 {
-                    c.Amount += 1;
+                    c.Amount += upkeepCost.Amount;
                     found = true;
                     break;
                 }
@@ -134,24 +133,26 @@ namespace GenericCityBuilderRPG.Models
 
             if (!found)
             {
-                ResourceCosts.Add(resourceCost);
+                UpkeepCosts.Add(upkeepCost);
             }
             
         }
 
-        public void SubtractResources(ResourceType type)
+        public void SubtractResources()
         {
-            foreach (var c in ResourceCosts)
+            if (Population > 0)
             {
-                if (c.Type == type)
-                {
-                    AddResource(c.Type, -c.Amount);
+                AddResource(ResourceType.Food, -Population);
+            }
 
-                    if (c.Type == ResourceType.Food && Food < 0)
-                    {
-                        AddResource(ResourceType.Population, -c.Amount / 2 < 1 ? 1 : c.Amount / 2);
-                    }
-                }
+            if (Food < 0)
+            {
+                AddResource(ResourceType.Population, -1);
+            }
+
+            foreach (var c in UpkeepCosts)
+            {
+                AddResource(c.Type, -c.Amount);
             }
         }
     }
